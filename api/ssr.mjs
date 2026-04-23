@@ -8,7 +8,7 @@
 // Cloudflare Workers plugin) is configured.
 
 import { Readable } from "node:stream";
-import serverEntry from "../dist/server/index.js";
+import serverEntry from "../dist/server/server.js";
 
 function buildRequest(req) {
   const host = req.headers["x-forwarded-host"] || req.headers.host || "localhost";
