@@ -58,6 +58,22 @@ async function sendResponse(webRes, res) {
 
 export default async function handler(req, res) {
   try {
+    console.log("[vercel-ssr] Incoming request:", req.url, req.method);
+    
+    if (!serverEntry || typeof serverEntry.fetch !== "function") {
+      console.error("[vercel-ssr] Invalid serverEntry:", {
+        type: typeof serverEntry,
+        hasFetch: serverEntry ? typeof serverEntry.fetch : "undefined"
+      });
+      res.statusCode = 500;
+      res.setHeader("content-type", "application/json");
+      res.end(JSON.stringify({
+        status: 500,
+        message: "Server entry not properly initialized"
+      }));
+      return;
+    }
+
     const request = buildRequest(req);
     const response = await serverEntry.fetch(request);
     await sendResponse(response, res);
