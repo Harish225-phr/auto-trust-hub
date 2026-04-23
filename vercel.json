@@ -1,0 +1,23 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "bun run build",
+  "outputDirectory": "dist/client",
+  "installCommand": "bun install",
+  "framework": null,
+  "functions": {
+    "api/ssr.mjs": {
+      "runtime": "@vercel/node@5.1.0",
+      "includeFiles": "dist/server/**"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/((?!assets/|favicon\\.ico|robots\\.txt|sitemap\\.xml|.*\\.[a-zA-Z0-9]+$).*)",
+      "destination": "/api/ssr"
+    },
+    {
+      "source": "/",
+      "destination": "/api/ssr"
+    }
+  ]
+}
